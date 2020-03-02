@@ -57,7 +57,9 @@ namespace API_REST
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger(); //Gerar um arquivo JSON - Swagger.json
+            app.UseSwagger(config =>{
+                // config.RouteTemplate = "gabriel/{documentName}/swagger.json" Configura qual o diretório do Swagger
+            }); //Gerar um arquivo JSON - Swagger.json
             app.UseSwaggerUI(config => { // Views HTML do Swagger
                 config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1 docs");
             });

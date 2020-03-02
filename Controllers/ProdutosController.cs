@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using API_REST.Data;
+using API_REST.HATEOAS;
 using API_REST.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,18 +14,31 @@ namespace API_REST.Controllers
     public class ProdutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private HATEOAS.HATEOAS HATEOAS;
 
         //Preparando o ambiente para manipular o banco de dados, injetando o mesmo quando a controller está sendo construída
         public ProdutosController(ApplicationDbContext context)
         {
             this._context = context;
+            HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/v1/Produtos"); //HATEOAS que aponta para essa url
+            HATEOAS.AddAction("GET_INFO", "GET");
+            HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
+            HATEOAS.AddAction("EDIT_PRODUCT", "PATCH");
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var produtos = _context.Produtos.ToList();
-            return Ok(produtos);
+            List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
+            foreach(var prod in produtos)
+            {
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = prod;
+                produtoHATEOAS.links = HATEOAS.GetActions(prod.Id.ToString());
+                produtosHATEOAS.Add(produtoHATEOAS);
+            }
+            return Ok(produtosHATEOAS);
             // return NotFound();  Status code 404
             // return Ok(new { nome = "Gabriel Lopes", empresa = "School of Net" }); Ocorreu como planejado, ou seja, retorna o status 200 e dados
         }
@@ -36,7 +51,10 @@ namespace API_REST.Controllers
             try
             {
                 Produto produto = _context.Produtos.First(p => p.Id == id);
-                return Ok(produto);
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(produto.Id.ToString());
+                return Ok(produtoHATEOAS);
 
             }//Se ele não conseguir encontrar um produto ele irá capturar o erro e tratar ele
             catch (Exception e)
@@ -112,7 +130,7 @@ namespace API_REST.Controllers
                         //"IF ELSE reduzido"  
                         /*Condição ? faz algo : faz outra coisa, ou seja, se o dado nome for diferente de nulo que vem da minha requisição eu altero o nome do produto pelo nome
                         que vem na minha requisição, senão o nome que veio na requisição é nulo ele mantem o nome do produto*/
-                        p.Nome = produto.Nome != null ? produto.Nome : p.Nome;  
+                        p.Nome = produto.Nome != null ? produto.Nome : p.Nome;
                         p.Preco = produto.Preco != 0 ? produto.Preco : p.Preco;
 
                         _context.SaveChanges();
@@ -143,6 +161,12 @@ namespace API_REST.Controllers
         {
             public string Nome { get; set; }
             public float Preco { get; set; }
+        }
+
+        public class ProdutoContainer
+        {
+            public Produto produto { get; set; }
+            public Link[] links { get; set; }
         }
 
 
