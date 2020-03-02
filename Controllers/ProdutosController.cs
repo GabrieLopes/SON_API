@@ -66,6 +66,23 @@ namespace API_REST.Controllers
 
         }
 
+        [HttpDelete("{id}")] //Especificando que irá trabalhar com um Id
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                Produto produto = _context.Produtos.First(p => p.Id == id);
+                _context.Produtos.Remove(produto);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 404;
+                return new ObjectResult("");
+            }
+        }
+
         //Recomendado criar a classe em outro arquivo, com ela passamos os dados que queremos que sejam visualizados, nesse caso não queremos o Id
         public class ProdutoTemp
         {
