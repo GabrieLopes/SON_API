@@ -97,6 +97,47 @@ namespace API_REST.Controllers
             }
         }
 
+        [HttpPatch()]
+        public IActionResult Patch([FromBody] Produto produto)
+        {
+            if (produto.Id > 0)
+            {
+                try
+                {
+                    var p = _context.Produtos.First(produtoTemp => produtoTemp.Id == produto.Id);
+                    if (p != null)
+                    {
+                        //Editar
+
+                        //"IF ELSE reduzido"  
+                        /*Condição ? faz algo : faz outra coisa, ou seja, se o dado nome for diferente de nulo que vem da minha requisição eu altero o nome do produto pelo nome
+                        que vem na minha requisição, senão o nome que veio na requisição é nulo ele mantem o nome do produto*/
+                        p.Nome = produto.Nome != null ? produto.Nome : p.Nome;  
+                        p.Preco = produto.Preco != 0 ? produto.Preco : p.Preco;
+
+                        _context.SaveChanges();
+                        return Ok();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new { msg = "Produto não encontrado." });
+                    }
+                }
+                catch
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "Produto não encontrado." });
+                }
+
+            }
+            else
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new { msg = "Id do produto é invalido." });
+            }
+        }
+
         //Recomendado criar a classe em outro arquivo, com ela passamos os dados que queremos que sejam visualizados, nesse caso não queremos o Id
         public class ProdutoTemp
         {
