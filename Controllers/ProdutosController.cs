@@ -52,6 +52,18 @@ namespace API_REST.Controllers
         //Recebendo um dado que vem do corpo da requisição através de um post
         public IActionResult Post([FromBody] ProdutoTemp produtoTemp)
         {
+            /* Validação */
+            if (produtoTemp.Preco <= 0)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new { msg = "O preço do produto não pode ser menor ou igual a 0." });
+            }
+            if (produtoTemp.Nome.Length <= 1)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new { msg = "O nome do produto precisa ter mais do que 1 caracter." });
+            }
+
             Produto p = new Produto();
             p.Nome = produtoTemp.Nome;
             p.Preco = produtoTemp.Preco;
@@ -60,6 +72,8 @@ namespace API_REST.Controllers
             _context.SaveChanges();
             Response.StatusCode = 201; //Retorna o status Criado
             return new ObjectResult(""); // Funciona similar ao OK porem você precisa setar o Status Code e usar um new
+
+
             // return Ok(new { msg = "Produto criado com sucesso!" }); Responde.StatusCode = 200;
             //Criando um novo produto e informando que o mesmo foi criado, com os parametros vísiveis 
             // return Ok(new { info = "Você criou um novo produto!", produto = produtoTemp });
