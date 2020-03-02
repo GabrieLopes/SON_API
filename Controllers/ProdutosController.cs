@@ -23,7 +23,7 @@ namespace API_REST.Controllers
         public IActionResult Get()
         {
             var produtos = _context.Produtos.ToList();
-            return Ok (produtos);
+            return Ok(produtos);
             // return NotFound();  Status code 404
             // return Ok(new { nome = "Gabriel Lopes", empresa = "School of Net" }); Ocorreu como planejado, ou seja, retorna o status 200 e dados
         }
@@ -35,13 +35,13 @@ namespace API_REST.Controllers
             //Vai tentar pegar algum produto do banco de dados com um determinado id, caso consiga ele retorna normalmente
             try
             {
-            Produto produto = _context.Produtos.First(p => p.Id == id);
-            return Ok (produto);
-                
+                Produto produto = _context.Produtos.First(p => p.Id == id);
+                return Ok(produto);
+
             }//Se ele não conseguir encontrar um produto ele irá capturar o erro e tratar ele
-            catch(Exception e)
+            catch (Exception e)
             {
-                return BadRequest(new {msg = "Id invalido!"});//Bad request é utilizad para dizer ao cliente que algo aconteceu errado na requisição
+                return BadRequest(new { msg = "Id invalido!" });//Bad request é utilizad para dizer ao cliente que algo aconteceu errado na requisição
             }
             // return Ok("Wesley Williams " + id);
         }
@@ -56,10 +56,11 @@ namespace API_REST.Controllers
 
             _context.Produtos.Add(p);
             _context.SaveChanges();
-            // return Ok(produtoTemp);
+            Response.StatusCode = 201; //Retorna o status Criado
+            return new ObjectResult(""); // Funciona similar ao OK porem você precisa setar o Status Code e usar um new
+            // return Ok(new { msg = "Produto criado com sucesso!" }); Responde.StatusCode = 200;
             //Criando um novo produto e informando que o mesmo foi criado, com os parametros vísiveis 
             // return Ok(new { info = "Você criou um novo produto!", produto = produtoTemp });
-            return Ok(new { msg = "Produto criado com sucesso!" });
 
         }
 
