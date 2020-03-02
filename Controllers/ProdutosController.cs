@@ -41,7 +41,9 @@ namespace API_REST.Controllers
             }//Se ele não conseguir encontrar um produto ele irá capturar o erro e tratar ele
             catch (Exception e)
             {
-                return BadRequest(new { msg = "Id invalido!" });//Bad request é utilizad para dizer ao cliente que algo aconteceu errado na requisição
+                Response.StatusCode = 404; //Retorna o status Criado
+                return new ObjectResult("");
+                // return BadRequest(new { msg = "Id invalido!" }); Bad request é utilizadd para dizer ao cliente que algo aconteceu errado na requisição, Status 400
             }
             // return Ok("Wesley Williams " + id);
         }
