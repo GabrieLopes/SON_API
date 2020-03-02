@@ -38,3 +38,8 @@ C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.Extensions
 C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\GLLV\Desktop\Code\API REST\obj\Debug\netcoreapp3.1\API REST.MvcApplicationPartsAssemblyInfo.cs
