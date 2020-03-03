@@ -27,6 +27,11 @@ namespace API_REST.Controllers
             HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
             HATEOAS.AddAction("EDIT_PRODUCT", "PATCH");
         }
+        [HttpGet("teste")]
+        public IActionResult TesteClaims()
+        {
+          return Ok(HttpContext.User.Claims.First(claim => claim.Type.ToString().Equals("IdUsuario", StringComparison.InvariantCultureIgnoreCase)).Value);
+        }
 
         [HttpGet]
         public IActionResult Get()
