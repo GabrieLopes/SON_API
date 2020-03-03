@@ -9,6 +9,7 @@ namespace API_REST.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Produto> Produtos { get ;set; }
+        public DbSet<Usuario> Usuarios { get ;set; }
         //Criar a classe de contexto no banco de dados
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
