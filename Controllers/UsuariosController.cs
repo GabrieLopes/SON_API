@@ -1,9 +1,12 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using API_REST.Data;
 using API_REST.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API_REST.Controllers
 {
@@ -47,7 +50,18 @@ namespace API_REST.Controllers
                     if (usuario.Senha.Equals(credenciais.Senha))
                     {
                         // Usuário achou a senha e logou!
-                        return Ok("Logado"); // Gerar Token JWT
+                        
+                        string ChaveDeSeguranca = "GFT_STARTER_TOKEN"; // Chave de segurança
+                        var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ChaveDeSeguranca));
+                        var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica, SecurityAlgorithms.HmacSha256Signature);
+
+                        var JWT = new JwtSecurityToken(
+                            issuer: "Gabriel Lopes", // Quem está fornecendo o JWT para o usuário
+                            expires: DateTime.Now.AddHours(1), // Expirará após tanto tempo após gerar o token
+                            audience: "usuario_comum",  // Para quem é destinado esse token
+                            signingCredentials: credenciaisDeAcesso
+                        );
+                        return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
                     }
                     else
                     {
