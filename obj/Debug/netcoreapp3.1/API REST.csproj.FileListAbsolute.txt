@@ -47,3 +47,6 @@ C:\Users\GLLV\Desktop\Code\API REST\obj\Debug\netcoreapp3.1\API REST.RazorTarget
 C:\Users\GLLV\Desktop\Code\API REST\obj\Debug\netcoreapp3.1\API REST.csproj.CopyComplete
 C:\Users\GLLV\Desktop\Code\API REST\obj\Debug\netcoreapp3.1\staticwebassets\API REST.StaticWebAssets.Manifest.cache
 C:\Users\GLLV\Desktop\Code\API REST\obj\Debug\netcoreapp3.1\staticwebassets\API REST.StaticWebAssets.xml
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\GLLV\Desktop\Code\API REST\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

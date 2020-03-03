@@ -4,6 +4,7 @@ using System.Linq;
 using API_REST.Data;
 using API_REST.HATEOAS;
 using API_REST.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_REST.Controllers
@@ -11,6 +12,7 @@ namespace API_REST.Controllers
     [Route("api/v1/[controller]")] // Versão Legado - Versão sem suporte!!
     [ApiController] //Esse comando nos fornece auxilio, por exemplo na parte de tratamento de erros
     //Importante colocar como ControllerBase para ter mais funcionalidades para API
+    [Authorize]
     public class ProdutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
