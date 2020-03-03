@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using API_REST.Data;
 using API_REST.Models;
@@ -55,11 +57,17 @@ namespace API_REST.Controllers
                         var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ChaveDeSeguranca));
                         var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica, SecurityAlgorithms.HmacSha256Signature);
 
+                        var claims = new List<Claim>();
+                        claims.Add(new Claim("IdUsuario", usuario.Id.ToString()));
+                        claims.Add(new Claim("Email", usuario.Email));
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
                         var JWT = new JwtSecurityToken(
                             issuer: "Gabriel Lopes", // Quem está fornecendo o JWT para o usuário
                             expires: DateTime.Now.AddHours(1), // Expirará após tanto tempo após gerar o token
                             audience: "usuario_comum",  // Para quem é destinado esse token
-                            signingCredentials: credenciaisDeAcesso
+                            signingCredentials: credenciaisDeAcesso,
+                            claims: claims
                         );
                         return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
                     }

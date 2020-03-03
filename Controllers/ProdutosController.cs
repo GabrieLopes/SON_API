@@ -12,7 +12,7 @@ namespace API_REST.Controllers
     [Route("api/v1/[controller]")] // Versão Legado - Versão sem suporte!!
     [ApiController] //Esse comando nos fornece auxilio, por exemplo na parte de tratamento de erros
     //Importante colocar como ControllerBase para ter mais funcionalidades para API
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProdutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
