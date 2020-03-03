@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using API_REST.Data;
 using API_REST.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_REST.Controllers
@@ -10,6 +13,7 @@ namespace API_REST.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+
         //Preparando o ambiente para manipular o banco de dados, injetando o mesmo quando a controller está sendo construída
         public UsuariosController(ApplicationDbContext context)
         {
@@ -17,7 +21,7 @@ namespace API_REST.Controllers
         }
 
         // api/v1/usuarios/registro
-        [HttpPost("registro")]
+        [HttpPost("Registro")]
         public IActionResult Registro([FromBody] Usuario usuario)
         {
             //Verificar se as credenciais são validas
@@ -26,6 +30,44 @@ namespace API_REST.Controllers
             _context.Add(usuario);
             _context.SaveChanges();
             return Ok(new { msg = "Usuario cadastrado com sucesso." });
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] Usuario credenciais)
+        {
+            // buscar usuário por E-mail
+            // verificar se a senha está correta
+            // gerar token JWT e retornar esse token para o usuário
+            try
+            {
+                Usuario usuario = _context.Usuarios.First(user => user.Email.Equals(credenciais.Email));
+                if (usuario != null)
+                {
+                    // Achou usuário com cadastro válido
+                    if (usuario.Senha.Equals(credenciais.Senha))
+                    {
+                        // Usuário achou a senha e logou!
+                        return Ok("Logado"); // Gerar Token JWT
+                    }
+                    else
+                    {
+                        Response.StatusCode = 401;  // Não autorizado
+                        return new ObjectResult("");
+                    }
+                }
+                else
+                {
+                    // Não achou nenhum usuário válido
+                    Response.StatusCode = 401;  // Não autorizado
+                    return new ObjectResult("");
+                }
+
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 401;  // Não autorizado
+                return new ObjectResult("");
+            }
         }
     }
 }
